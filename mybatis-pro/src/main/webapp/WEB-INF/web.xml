@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+	<welcome-file-list>
+		<welcome-file>home.jsp</welcome-file>
+	</welcome-file-list>
+	
+  <display-name>Mybatis-pro</display-name>
+  <filter>
+  	<filter-name>CharacterEncodingFilter</filter-name>
+  	<filter-class>peng.Filter.CharacterEncodingFilter</filter-class>
+  	<init-param>
+  		<param-name>charset</param-name>
+  		<param-value>utf-8</param-value>
+  	</init-param>
+  </filter>
+  <filter-mapping>
+  	<filter-name>CharacterEncodingFilter</filter-name>
+  	<url-pattern>/</url-pattern>
+  </filter-mapping>
+  <listener>
+  	<listener-class>peng.listener.InitSqlSessionListener</listener-class>
+  </listener>
+  
+
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>UsersFindByIdServlet</display-name>
+  	<servlet-name>UsersFindByIdServlet</servlet-name>
+  	<servlet-class>peng.service.UsersFindByIdServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>UsersAddServlet</display-name>
+  	<servlet-name>UsersAddServlet</servlet-name>
+  	<servlet-class>peng.service.UsersAddServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>UsersUpdateServlet</display-name>
+  	<servlet-name>UsersUpdateServlet</servlet-name>
+  	<servlet-class>peng.service.UsersUpdateServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>UserDelServlet</display-name>
+  	<servlet-name>UserDelServlet</servlet-name>
+  	<servlet-class>peng.service.UserDelServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>UsersFindByIdServlet</servlet-name>
+  	<url-pattern>/UsersFindByIdServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>UsersAddServlet</servlet-name>
+  	<url-pattern>/UsersAddServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>UsersUpdateServlet</servlet-name>
+  	<url-pattern>/UsersUpdateServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>UserDelServlet</servlet-name>
+  	<url-pattern>/UserDelServlet</url-pattern>
+  </servlet-mapping>
+
+</web-app>

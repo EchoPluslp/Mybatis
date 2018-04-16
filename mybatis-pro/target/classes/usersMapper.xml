@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper 用于定义一个映射配置文件的根节点 namespace属性是用来配置当前的命名空间 命名空间，主要进行session级别的缓存管理 
+	默认情况下使用当前操作实体类的全路径！！！ -->
+<mapper namespace="peng.entity.Users">
+
+	<!--Mysql动态语句配置 将两个不同的语句转化为了一条语句 要注意id是当前命名空间里面的ID -->
+
+	<!-- //<select id="findUsers" resultType="peng.entity.Users"> -->
+	<!-- 配置resultMap -->
+	<select id="findUsers" resultMap="forUsers">
+		select * from users
+		<if test="id != null">
+			where id = #{id}
+		</if>
+	</select>
+	<!-- 自定义关系集合！！！ 主要包含，一些自定义操作的配置，比如，不一致的属性和字段名 -->
+	
+	<resultMap type="peng.entity.Users" id="forUsers">
+		<!-- 绑定id主键 -->
+		<id property="id" column="id"/>
+		<!-- id配置的主键不同的配置 -->
+		<!-- <id column="username" property="name"/> -->
+		<!-- result只要配置普通属性 column表示配置的是数据库字段名称 property表示配置的是实体类的属性名称 -->
+		<result column="username" property="name" />
+		
+		<collection property="address" column="id" ofType="peng.entity.Address" select="getAddress"></collection>
+	</resultMap>
+	
+	<select id="getAddress" resultType="peng.entity.Address">
+		select * from address where userid = #{id}
+	</select>
+	
+	<!-- <select id="findById" resultType="peng.entity.Users"> select * from 
+		users where id = #{id} </select> -->
+
+	<!-- 配置自动增长的id 并且sql片段 -->
+	<sql id="user_fields">
+		username, password, nickname, age, gender, phone,email,
+		createTime,
+		updateTime, lastLogin, userStatus, remark
+	</sql>
+	<!-- 配置自动增长的ID -->
+	<insert id="addUser" useGeneratedKeys="true" keyProperty="id">
+		insert into users(
+		<include refid="user_fields"></include>
+		)
+		values(#{name},#{userpass},#{nickname},#{age},#{gender},#{phone},#{email},#{createTime},
+		#{updateTime},#{lastLogin},#{userStatus},#{remark})
+	</insert>
+
+	<!-- 使用动态语句，避免sql中非空字段，在这里设置为非空！同时动态语句，有益于参数修改 -->
+	<update id="updateuser">
+		update users
+		<set>
+			<if test="name != null">username=#{name},</if>
+			<if test="userpass != null">password=#{userpass},</if>
+			<if test="nickname != null">nickname=#{nickname},</if>
+			<if test="age != null">age=#{age},</if>
+			<if test="gender != null">gender=#{gender},</if>
+			<if test="phone != null">phone=#{phone},</if>
+			<if test="createTime != null">createTime=#{createTime},</if>
+			<if test="updateTime != null">updateTime=#{updateTime},</if>
+			<if test="lastLogin != null">lastLogin=#{lastLogin},</if>
+			<if test="userStatus != null">userStatus=#{userStatus},</if>
+			<if test="remark != null">remark=#{remark},</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="deluser">
+		delete from users where id = #{id}
+	</delete>
+
+</mapper>
